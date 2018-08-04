@@ -1,0 +1,7 @@
+:bodytext "MyLib is a demonstration library template for programmers who want to develop new libraries for PWGL. It has a load file ('mylib.asd'), a file with macro definitions ('macros'), a file with some lisp code ('standard-lisp-code'), a minimalistic set of box definitions ('boxes'), and a user-menu definition ('menus')."
+:bodytext "If you wish to develop a library for PWGL, do not copy 'mylib' as a template, but use the 'Library Tool' instead."
+
+:important "The easiest way of creating a new library:
+Go to #menu#File § Create PWGL Library...#menuoff# and use the Library Tool. Fill in the appropriate information and a correctly formatted template is created for you."
+
+:bodytext "It is a good practise to try to provide all the pertinent information about the library. It helps maintaining and distributing your work."

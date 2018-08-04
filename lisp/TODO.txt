@@ -1,0 +1,11 @@
+same-pc als Listen
+voice-quantisation als box
+convert code-boxes to functions
+ab75-score-extraction -> extract measures from parts
+
+Window Titel:
+Hi Achim,
+Waiting a proper way to do it, I do the following hack:
+- open your patch with a text editor
+- add after the string documentation and its position:
+   :TITLE "your title" :X 0 :Y 0 :WIDTH 730 :HEIGHT 530

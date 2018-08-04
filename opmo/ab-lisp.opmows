@@ -1,0 +1,47 @@
+;;; file version
+
+3 
+
+;;; navigator
+
+(:GROUP "root"
+ ((:GROUP "lisp"
+   ((:FILE "lisp/envelopes.lisp") (:FILE "lisp/lists.lisp")
+    (:FILE "lisp/math.lisp") (:FILE "lisp/pitchclass.lisp")
+    (:FILE "lisp/quantisation.lisp") (:FILE "lisp/random.lisp")
+    (:FILE "lisp/spectral.lisp") (:FILE "lisp/utilities.lisp")))
+  (:GROUP "pwgl"
+   ((:FILE "lisp/boxes.lisp") (:FILE "lisp/menus.lisp")))
+  (:GROUP "package" ((:FILE "lisp/package.lisp")))))
+
+;;; layout plist
+
+(:NAVIGATOR-RECT #(0.0D0 0.0D0 225.0D0 1312.0D0)
+ :SELECTED-NAVIGATOR-TAB-TAG 0 :NAVIGATOR-COLLAPSED-P NIL
+ :MIDDLE-RECT #(226.0D0 0.0D0 1366.0D0 1312.0D0) :EDITOR-RECT
+ #(0.0D0 0.0D0 1366.0D0 1103.0D0) :COMPOSER-VISIBLE-P T
+ :ASSISTANT-VISIBLE-P T :LISTENER-RECT
+ #(0.0D0 1104.0D0 1366.0D0 208.0D0) :LISTENER-COLLAPSED-P NIL
+ :UTILITIES-RECT #(1593.0D0 0.0D0 255.0D0 1312.0D0)
+ :SELECTED-UTILITIES-TAB-TAG 0 :QUICK-VIEW-COLLAPSED-P T
+ :UTILITIES-COLLAPSED-P NIL)
+
+;;; composer
+
+"lisp/lists.lisp" 
+
+;;; list of assistants
+
+NIL 
+
+;;; grid menu state 
+
+(:GRID-MENU-STATE
+ (:COMPOSER
+  ("lisp/spectral.lisp" "lisp/envelopes.lisp" "lisp/utilities.lisp"
+   "lisp/package.lisp" "lisp/random.lisp" "lisp/quantisation.lisp"
+   "lisp/pitchclass.lisp" "lisp/menus.lisp" "lisp/math.lisp"
+   "lisp/lists.lisp" "lisp/boxes.lisp")
+  :ASSISTANTS ("todo.rtfd/" "load-package.rtfd/")))
+
+;;; quick-view pathname

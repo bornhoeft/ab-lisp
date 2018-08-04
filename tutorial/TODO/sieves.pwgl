@@ -1,0 +1,78 @@
+(IN-PACKAGE :CCL)
+;; this patch was saved with PWGL version 1.0 beta RC 18 (0.9.18-201)
+(ASSERT-PATCH-SAVED-VERSION-NOT-NEWER-THAN (QUOTE ((0 9 18) 201)))
+(LET ((WIN (MAKE-INSTANCE (QUOTE PWGL-PW-WINDOW) :PWGL-SUBVIEWS (LIST (MAKE-INSTANCE (QUOTE PWGL-LISP-CODE-BOX) :R 1.0 :G 0.0 :B 0.0 :PWGL-SUBVIEWS (LIST (MAKE-INSTANCE (QUOTE PWGL-TEXT-SUBVIEW) :R 1.0 :G 1.0 :B 1.0 :BOX-STRING "auto-evaluate" :APPLICATION-WINDOW (MAKE-INSTANCE (QUOTE PWGL-FRED-WINDOW) :TITLE "Text-Editor" :X 389 :Y 106 :WIDTH 1018 :HEIGHT 946) :VALUE-STRING ";;; Sieve functions
+
+;;; Modelled after Christopher Ariza
+;;; The Xenakis Sieve as Object: A New Model and a Complete Implementation
+;;; Computer Music Journal, 29:2, pp. 40<2013>60, Summer 2005
+
+(in-package :cl-user)
+
+(defun erastosthenes-sieve ()
+  (loop for i from 2 to 7
+        collect
+        (loop for y from (expt i 2) to 50 by i
+              collect y)))
+
+; (erastosthenes-sieve)
+
+(defun sieve (modulus shift maximum)
+  (when (> modulus 0)
+    (loop for i from shift to maximum by modulus collect i)))
+
+; (sieve 3 0 50)
+
+(defun sieves (residual-classes maximum)
+  (loop for i from 0 to (- (length residual-classes) 2) by 2
+        for modulus = (nth i residual-classes)
+        for shift = (nth (+ 1 i) residual-classes)
+        collect (sieve modulus shift maximum)))
+
+; (sieves '(3 0 4 0) 50)
+
+(defun sieves-union (residual-classes maximum)
+  (loop for i from 0 to (- (length residual-classes) 2) by 2
+        for modulus = (nth i residual-classes)
+        for shift = (nth (+ 1 i) residual-classes)
+        append (sieve modulus shift maximum) into reslis
+        finally (return (sort (remove-duplicates reslis) #'<))))
+
+; (sieves-union '(3 0 4 0) 50)
+
+(defun sieves-union-intervals (residual-classes maximum)
+  (let ((s (sieves-union residual-classes maximum)))
+    (loop for i in s
+          for j in (cdr s)
+          collect (abs (- j i)))))
+                             
+; (sieves-union-intervals '(3 0 4 0) 50)
+
+(defun sieves-union-binary (residual-classes maximum)
+  (let ((s (sieves-union residual-classes maximum)))
+    (loop for j from (apply #'min s) to (apply #'max s)        
+          collect (if (member j s) 1 0))))
+
+; (sieves-union-binary '(3 0 4 0) 50)
+
+;;; --------------------------- TODO ----------------------- ;;;
+
+(defun sieves-intersect (residual-classes maximum)
+  (loop for i from 0 to (- (length residual-classes) 2) by 2
+        for modulus = (nth i residual-classes)
+        for shift = (nth (+ 1 i) residual-classes)
+        collect (sieve modulus shift maximum) into reslis
+        finally (return (loop for j from 0 to (- (length residual-classes) 2)
+                              for k = (nth j reslis)
+                              with l = (nth (+ j 1) reslis)
+                              collect (intersection k l) into interlis
+                              do (setf l interlis)
+                              finally (return interlis)))))
+
+;  (sieves-intersect '(3 0 4 0 5 0) 50)
+")) :X 0.5479999999999996D0 :Y 1.424D0 :W 0.11 :H 0.015 :BOX-STRING "(Lisp)" :BOX-LAYOUT (MAKE-INSTANCE (QUOTE PWGL-BOX-LAYOUT) :GROUPING-LIST (LIST 1) :ORIG-GROUPING-LIST (LIST 1) :BORDER 0.0084) :PW-FUNCTION (QUOTE LISP-CODE-BOX)) (MAKE-INSTANCE (QUOTE PWGL-CODE-BOX) :PWGL-SUBVIEWS (LIST (MAKE-INSTANCE (QUOTE PWGL-FREE-VALUE-BOX-SUBVIEW) :BOX-STRING "periods" :CURVAL 2 :VALUE-STRING "2" :ARG-NAME (QUOTE PERIODS) :ARG-TYPE :VAR) (MAKE-INSTANCE (QUOTE PWGL-FREE-VALUE-BOX-SUBVIEW) :BOX-STRING "modlis" :CURVAL (LIST 3 4) :VALUE-STRING "(3 4)" :ARG-NAME (QUOTE MODLIS) :ARG-TYPE :VAR)) :X 0.9480000029802316D0 :Y 1.3199999970197674D0 :W 0.26 :H 0.2 :BOX-STRING "sieve-period" :PWGL-OUTPUTS (LIST (MAKE-INSTANCE (QUOTE PWGL-OUTPUT))) :BOX-LAYOUT (MAKE-INSTANCE (QUOTE PWGL-BOX-LAYOUT) :GROUPING-LIST (LIST 1 1) :ORIG-GROUPING-LIST (LIST 1 1) :BORDER 0.012) :PW-FUNCTION (QUOTE CODE-BOX) :TEXT "(iter (for i in modlis)
+  (with p = (* periods (apply #'lcm modlis)))
+  (appending
+   (iter (for y from 0 to p by i)
+     (collect y)) into reslis)
+  (finally (return (sort (remove-duplicates reslis) #'<))))")) :X 5 :Y 5 :X 5 :Y 22 :WIDTH 730 :HEIGHT 530))) (WINDOW-SELECT WIN) WIN)
