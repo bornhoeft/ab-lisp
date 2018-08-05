@@ -1,3 +1,4 @@
+collect functions from lisp and OPMO
 same-pc als Listen
 voice-quantisation als box
 convert code-boxes to functions
