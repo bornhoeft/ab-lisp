@@ -6,13 +6,31 @@
 
 (:GROUP "root"
  ((:GROUP "lisp"
-   ((:FILE "lisp/envelopes.lisp") (:FILE "lisp/lists.lisp")
-    (:FILE "lisp/math.lisp") (:FILE "lisp/pitchclass.lisp")
-    (:FILE "lisp/quantisation.lisp") (:FILE "lisp/random.lisp")
-    (:FILE "lisp/spectral.lisp") (:FILE "lisp/utilities.lisp")))
-  (:GROUP "pwgl"
-   ((:FILE "lisp/boxes.lisp") (:FILE "lisp/menus.lisp")))
-  (:GROUP "package" ((:FILE "lisp/package.lisp")))))
+   ((:FILE
+     "/Users/born/Documents/code/github/ab-lisp/lisp/boxes.lisp")
+    (:FILE
+     "/Users/born/Documents/code/github/ab-lisp/lisp/envelopes.lisp")
+    (:FILE
+     "/Users/born/Documents/code/github/ab-lisp/lisp/lists.lisp")
+    (:FILE
+     "/Users/born/Documents/code/github/ab-lisp/lisp/math.lisp")
+    (:FILE
+     "/Users/born/Documents/code/github/ab-lisp/lisp/menus.lisp")
+    (:FILE
+     "/Users/born/Documents/code/github/ab-lisp/lisp/package.lisp")
+    (:FILE
+     "/Users/born/Documents/code/github/ab-lisp/lisp/pitchclass.lisp")
+    (:FILE
+     "/Users/born/Documents/code/github/ab-lisp/lisp/quantisation.lisp")
+    (:FILE
+     "/Users/born/Documents/code/github/ab-lisp/lisp/random.lisp")
+    (:FILE
+     "/Users/born/Documents/code/github/ab-lisp/lisp/spectral.lisp")
+    (:FILE
+     "/Users/born/Documents/code/github/ab-lisp/lisp/utilities.lisp")))
+  (:FILE "/Users/born/Documents/code/github/ab-lisp/README.md")
+  (:FILE "/Users/born/Documents/code/github/ab-lisp/TODO.txt")
+  (:FILE "load-package.rtfd")))
 
 ;;; layout plist
 
@@ -28,20 +46,21 @@
 
 ;;; composer
 
-"lisp/lists.lisp" 
+"/Users/born/Documents/code/github/ab-lisp/TODO.txt" 
 
 ;;; list of assistants
 
-NIL 
+("load-package.rtfd/")
 
 ;;; grid menu state 
 
 (:GRID-MENU-STATE
  (:COMPOSER
-  ("lisp/spectral.lisp" "lisp/envelopes.lisp" "lisp/utilities.lisp"
-   "lisp/package.lisp" "lisp/random.lisp" "lisp/quantisation.lisp"
-   "lisp/pitchclass.lisp" "lisp/menus.lisp" "lisp/math.lisp"
-   "lisp/lists.lisp" "lisp/boxes.lisp")
-  :ASSISTANTS ("todo.rtfd/" "load-package.rtfd/")))
+  ("/Users/born/Documents/code/github/ab-lisp/TODO.txt"
+   "/Users/born/Documents/code/github/ab-lisp/README.md"
+   "/Users/born/Documents/code/github/ab-lisp/lisp/boxes.lisp")
+  :ASSISTANTS
+  ("/Users/born/Documents/code/github/ab-lisp/lisp/boxes.clufasl"
+   "load-package.rtfd/" "todo.rtfd/")))
 
 ;;; quick-view pathname
