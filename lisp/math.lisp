@@ -157,6 +157,24 @@ In the alternative notation: sigma = sqrt((x0 -<03BC>)2 + (x1 -<03BC>)2 + ... + 
   (* precision (round number precision)))
 ;; (round-off 2.134253 .12)
 
+(defun round-even (val)
+  (let ((rv (round val))
+        (dec (nth-value 1 (floor val))))
+    (if (and (oddp rv) (< rv val))
+      (+ val (- 1 dec))
+      (if (and (oddp rv) (> rv val))
+      (- val dec)
+        (if (oddp rv)
+          (+ val 1)
+          rv)))))
+;; (round-even 1.4) => 2
+;; (round-even 0.9) => 0
+;; (round-even 1) => 2
+;; (round-even 0.8) => 0
+;; (round-even 11.7) => 12
+;; (round-even 5.5) => 6
+;; (round-even 4.99) => 4
+
 (defun root (n x)
   "(root 12 2) => 1.0594632 (semitone)"
   (expt x (/ 1 n)))
