@@ -272,7 +272,97 @@ In the alternative notation: sigma = sqrt((x0 -<03BC>)2 + (x1 -<03BC>)2 + ... + 
   (nth-value 1 (floor number divisor)))
 ;; (residual 17 5) -> 2
 
+(defun g+ (val1 val2)
+    "Version of +. Both arguments can be numbers or lists"
+(let* ((va1 (if (numberp val1) (list val1) val1))
+       (va2 (if (numberp val2) (list val2) val2))
+       (v1 (if (numberp val1) (loop repeat (length va2) collect val1) va1))
+       (v2 (if (numberp val2) (loop repeat (length va1) collect val2) va2)))
+       (loop for i in v1
+         for j in v2
+         collect (+ i j) into reslis
+         finally (return (if (equal (length reslis) 1)
+                           (first reslis)
+                           reslis)))))
+;; (g+ 4 2) => 6
+;; (g+ 2 4) => 6
+;; (g+ 4 '(1 2 3)) => (5 6 7)
+;; (g+ '(1 2 3) 4) => (5 6 7)
+;; (g+ '(1 2 3) '(2 3 4)) => (3 5 7)
+;; (g+ '(1 2 3) '(2 3)) => (3 5)
 
+(defun g- (val1 val2)
+    "Version of -. Both arguments can be numbers or lists"
+(let* ((va1 (if (numberp val1) (list val1) val1))
+       (va2 (if (numberp val2) (list val2) val2))
+       (v1 (if (numberp val1) (loop repeat (length va2) collect val1) va1))
+       (v2 (if (numberp val2) (loop repeat (length va1) collect val2) va2)))
+       (loop for i in v1
+         for j in v2
+         collect (- i j) into reslis
+         finally (return (if (equal (length reslis) 1)
+                           (first reslis)
+                           reslis)))))
+;; (g- 4 2) => 2
+;; (g- 2 4) => -2
+;; (g- 4 '(1 2 3)) => (3 2 1)
+;; (g- '(1 2 3) 4) => (-3 -2 -1)
+;; (g- '(1 2 3) '(2 3 4)) => (-1 -1 -1)
+;; (g- '(1 2 3) '(2 3)) => (-1 -1)
 
+(defun g* (val1 val2)
+    "Version of *. Both arguments can be numbers or lists"
+(let* ((va1 (if (numberp val1) (list val1) val1))
+       (va2 (if (numberp val2) (list val2) val2))
+       (v1 (if (numberp val1) (loop repeat (length va2) collect val1) va1))
+       (v2 (if (numberp val2) (loop repeat (length va1) collect val2) va2)))
+       (loop for i in v1
+         for j in v2
+         collect (* i j) into reslis
+         finally (return (if (equal (length reslis) 1)
+                           (first reslis)
+                           reslis)))))
+;; (g* 4 2) => 8
+;; (g* 2 4) => 8
+;; (g* 4 '(1 2 3)) => (4 8 12)
+;; (g* '(1 2 3) 4) => (4 8 12)
+;; (g* '(1 2 3) '(2 3 4)) => (2 6 12)
+;; (g* '(1 2 3) '(2 3)) => (2 6)
 
+(defun g/ (val1 val2)
+    "Version of /. Both arguments can be numbers or lists"
+(let* ((va1 (if (numberp val1) (list val1) val1))
+       (va2 (if (numberp val2) (list val2) val2))
+       (v1 (if (numberp val1) (loop repeat (length va2) collect val1) va1))
+       (v2 (if (numberp val2) (loop repeat (length va1) collect val2) va2)))
+       (loop for i in v1
+         for j in v2
+         collect (/ i j) into reslis
+         finally (return (if (equal (length reslis) 1)
+                           (first reslis)
+                           reslis)))))
+;; (g/ 4 2) => 2
+;; (g/ 2 4) => 1/2
+;; (g/ 4.0 '(1 2 3)) => (4.0 2.0 1.3333334)
+;; (g/ '(1 2 3) 4) => (1/4 1/2 3/4)
+;; (g/ '(1 2 3) '(2 3 4)) => (1/2 2/3 3/4)
+;; (g/ '(1 2 3) '(2 3)) => (1/2 2/3)
 
+(defun round-even (val)
+  "Round to the next even number."
+  (let ((rv (round val))
+        (dec (nth-value 1 (floor val))))
+    (if (and (oddp rv) (< rv val))
+      (+ val (- 1 dec))
+      (if (and (oddp rv) (> rv val))
+      (- val dec)
+        (if (oddp rv)
+          (* 1.0 (+ val 1))
+          rv)))))
+;; (round-even 1.4) => 2
+;; (round-even 0.9) => 0
+;; (round-even 1) => 2
+;; (round-even 0.8) => 0
+;; (round-even 11.7) => 12
+;; (round-even 5.5) => 6
+;; (round-even 4.99) => 4
