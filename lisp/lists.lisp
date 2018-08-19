@@ -495,6 +495,7 @@
 ;; ;; (signum-reduce '(-1 -1 1 1 1 1 -1 -1))
 
 (defun divide-range (start end samples &key rounded)
+  "n equally spaced samples between (including) start and end."
   (loop repeat samples
     with >stnd = (> start end)
     with st = (if >stnd end start)
