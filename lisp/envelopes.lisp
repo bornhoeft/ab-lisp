@@ -93,6 +93,7 @@
 
 ;; (split-xy '(1 23 3 30 4 40)) => ((1 3 4) (23 30 40))
 
+#|
 (defun sample-env-x (env samples)
   (labels ((resample-x (lst samples)
              "Resample a list of x-values to any number of 
@@ -173,6 +174,7 @@
         finally (return results)))))
   
 ;; (sample-env-xy '(0 1 1 3 2 2 3 4) 5) => (0 1.0 3/4 2.5 3/2 2.5 9/4 2.5 3 4.0)
+|#
 
 (defun sample-env (env samples)
   "Taking any number of samples from an envelope of x/y-values.
@@ -223,5 +225,4 @@
   
 ;; (sample-env '(0 1 1 3 2 2 3 4) 5) => ((0 3/4 3/2 9/4 3) (1.0 2.5 2.5 2.5 4.0))
 ;; (sample-env '((0 1 2 3) (1 3 2 4)) 5) => ((0 3/4 3/2 9/4 3) (1.0 2.5 2.5 2.5 4.0))
-;; (sample-env '((0 2 3 6) (60 54 83 69)) 5) => ((0 3/2 3 9/2 6) (60.0 55.5 83.0 76.0 69.0))
-    
+;; (sample-env '((0 2 3 6) (60 54 83 69)) 5) => ((0 3/2 3 9/2 6) (60.0 55.5 83.0 76.0 69.0))    

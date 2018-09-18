@@ -56,6 +56,24 @@
     (* (+ val1 val2) .5))
 ;; (half -10 5) => -2.5
 
+(defun half-list (lis &key (type))
+  (let* ((lenlis (length lis))
+         (listest (oddp lenlis))
+         (half (round (* 0.5 lenlis)))
+         (half-elt-right (nth half lis))
+         (half-elt-left (nth (- half 1) lis)))
+    (if listest
+      half-elt-right
+      (case type
+        (left half-elt-left)
+        (right half-elt-right)
+        (otherwise (list half-elt-left half-elt-right))))))
+;; (half-list '(3 5 4 6 8))
+;; (half-list '(3 5 4 6 8 1))
+;; (half-list '(3 5 4 6 8 1) :type 'left)
+;; (half-list '(3 5 4 6 8 1) :type 'right)
+;; (half-list '(3 5 4 6 8) :type 'right)
+
 (defun semi-to-srate (semitones)
   "semitones just returns the right src from the given 
   semitone transposition. e.g. (semitones 12) will return 2."

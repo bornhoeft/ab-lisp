@@ -140,7 +140,6 @@ In the alternative notation: sigma = sqrt((x0 -<03BC>)2 + (x1 -<03BC>)2 + ... + 
           summing xx into xx-sum
           finally (return (expt (/ xx-sum n) (/ 1.0 p))))))
 
-
 ; (power-mean '(1 2 3 4 5 6 7 8 9 10)) => 5.5
 ; (power-mean '(1 2 3 4 5 6 7 8 9 10) :arithmetic) => 5.5
 ; (power-mean '(1 2 3 4 5 6 7 8 9 10) :quadric) => 6.204837
@@ -148,6 +147,7 @@ In the alternative notation: sigma = sqrt((x0 -<03BC>)2 + (x1 -<03BC>)2 + ... + 
 (defun diff (val1 val2)
   "absolute difference between val1 and val2: (diff -1 5) => 6"
   (abs (- val1 val2)))
+
 ;; (diff -1 5) => 6 
 
 (defun square (x) (* x x))
@@ -155,9 +155,11 @@ In the alternative notation: sigma = sqrt((x0 -<03BC>)2 + (x1 -<03BC>)2 + ... + 
 (defun round-off (number precision)
   "Round off the number to specified precision. E.g. (round-off 1.23 .1) = 1.2"
   (* precision (round number precision)))
+
 ;; (round-off 2.134253 .12)
 
 (defun round-even (val)
+  "Round to the next even number."
   (let ((rv (round val))
         (dec (nth-value 1 (floor val))))
     (if (and (oddp rv) (< rv val))
@@ -165,8 +167,9 @@ In the alternative notation: sigma = sqrt((x0 -<03BC>)2 + (x1 -<03BC>)2 + ... + 
       (if (and (oddp rv) (> rv val))
       (- val dec)
         (if (oddp rv)
-          (+ val 1)
+          (* 1.0 (+ val 1))
           rv)))))
+
 ;; (round-even 1.4) => 2
 ;; (round-even 0.9) => 0
 ;; (round-even 1) => 2
@@ -175,15 +178,18 @@ In the alternative notation: sigma = sqrt((x0 -<03BC>)2 + (x1 -<03BC>)2 + ... + 
 ;; (round-even 5.5) => 6
 ;; (round-even 4.99) => 4
 
+
 (defun root (n x)
   "(root 12 2) => 1.0594632 (semitone)"
   (expt x (/ 1 n)))
+
 ;; (root 12 2) => 1.0594632 (semitone)
 
 ;;; Golden Section
 
 (defun *golden-number* ()
   (/ (+ 1 (sqrt 5)) 2))
+
 ;; (*golden-number*) -> 1.618034
 
 (defun gs (s &optional part)
@@ -192,6 +198,7 @@ In the alternative notation: sigma = sqrt((x0 -<03BC>)2 + (x1 -<03BC>)2 + ... + 
       ('major (/ s gn))
       ('minor (- s (/ s gn)))
       (otherwise (* s gn)))))
+
 ;; (gs 1) => 1.618034
 ;; (gs 1 'major) => 0.618034
 ;; (gs 1 'minor) => 0.381966
@@ -202,6 +209,7 @@ In the alternative notation: sigma = sqrt((x0 -<03BC>)2 + (x1 -<03BC>)2 + ... + 
   (if (numberp s) (gs s p)
     (loop for i in s
           collect (gs i p))))
+
 ;; (golden-section 1) => 1.618034
 ;; (golden-section '(1 2 3 4))
 ;; (golden-section '(1 2 3 4) 'major)
@@ -209,16 +217,19 @@ In the alternative notation: sigma = sqrt((x0 -<03BC>)2 + (x1 -<03BC>)2 + ... + 
 (defun percentage (p h)
   "How much percent is p from h?"
   (* h (/ p 100)))
+
 ;; (percentage 10 80) => 8
 
 (defun percentage? (n h)
   "How much is n in percent from h?"
   (* 100 (/ n h)))
+
 ;; (percentage? 20 80) = 25
 
 (defun hundred-percent? (n p)
   "What is hundred percent when n is p percent ?"
   (* 100 (/ n p)))
+
 ;; (hundred-percent? 20 10) => 200
 
 ;;; Greatest common divisor
@@ -228,11 +239,13 @@ In the alternative notation: sigma = sqrt((x0 -<03BC>)2 + (x1 -<03BC>)2 + ... + 
 (defun gcd2 (a b)
   "Greatest common divisor of 2 numbers."
   (if (zerop b) a (gcd2 b (mod a b))))
+
 ;; (gcd2 2345 5432) => 7
 
 (defun gcd-lst (lst)
   "Greatest common divisor of numbers in lst."
   (apply #'gcd lst))
+
 ;; (gcd-lst '(30 40 50)) => 10
 
 (defun lcm2 (&rest args)
@@ -245,6 +258,7 @@ In the alternative notation: sigma = sqrt((x0 -<03BC>)2 + (x1 -<03BC>)2 + ... + 
 (defun lcm-lst (lst)
   "Least common multiple of numbers in lst."
   (apply #'lcm lst))
+
 ;; (lcm-lst '(1 2 3 4)) => 12
 
 (defun cartesian-product (lists)
@@ -260,16 +274,19 @@ In the alternative notation: sigma = sqrt((x0 -<03BC>)2 + (x1 -<03BC>)2 + ... + 
               (t (append (distl (car M) N)
                          (cartesian (cdr M) N))))))
     (reduce #'cartesian lists)))
+
 ;; (cartesian-product '((A B C) (1 2 3) (x y z)))
 
 (defun decimals (number)
   "Decimal numbers of a float."
   (nth-value 1 (floor number)))
+
 ;; (decimals 5.432) -> 0.43200016
 
 (defun residual (number divisor)
   "Rest of an integer division."
   (nth-value 1 (floor number divisor)))
+
 ;; (residual 17 5) -> 2
 
 (defun g+ (val1 val2)
@@ -347,22 +364,3 @@ In the alternative notation: sigma = sqrt((x0 -<03BC>)2 + (x1 -<03BC>)2 + ... + 
 ;; (g/ '(1 2 3) 4) => (1/4 1/2 3/4)
 ;; (g/ '(1 2 3) '(2 3 4)) => (1/2 2/3 3/4)
 ;; (g/ '(1 2 3) '(2 3)) => (1/2 2/3)
-
-(defun round-even (val)
-  "Round to the next even number."
-  (let ((rv (round val))
-        (dec (nth-value 1 (floor val))))
-    (if (and (oddp rv) (< rv val))
-      (+ val (- 1 dec))
-      (if (and (oddp rv) (> rv val))
-      (- val dec)
-        (if (oddp rv)
-          (* 1.0 (+ val 1))
-          rv)))))
-;; (round-even 1.4) => 2
-;; (round-even 0.9) => 0
-;; (round-even 1) => 2
-;; (round-even 0.8) => 0
-;; (round-even 11.7) => 12
-;; (round-even 5.5) => 6
-;; (round-even 4.99) => 4

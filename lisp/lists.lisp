@@ -653,6 +653,20 @@
 ;; (nestedp '(1 2 3 4 5)) => nil
 ;; (nestedp '((1 2 3 4 5) nil)) => t
 ;; (nestedp '((1 2 3 4 5) (6 7 8 9))) => t
+
+(defun cycle (lis rep &key (abs nil))
+  ""
+  (loop repeat rep 
+    for i from 0 
+    if abs
+    collect  (nth (mod i (length lis)) lis)
+    else
+    append lis
+    end))
+
+;; (cycle '(1 2 3 4) 3)
+;; (cycle '(1 2 3 4) 11 :abs t)
+
  
 
 ;;; loop deterministisch dann heuristisch
