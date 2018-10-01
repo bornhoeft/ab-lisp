@@ -34,19 +34,19 @@
 
 ;;; layout plist
 
-(:NAVIGATOR-RECT #(0.0D0 0.0D0 204.0D0 1333.0D0)
+(:NAVIGATOR-RECT #(0.0D0 0.0D0 177.0D0 1038.0D0)
  :SELECTED-NAVIGATOR-TAB-TAG 0 :NAVIGATOR-COLLAPSED-P NIL
- :MIDDLE-RECT #(205.0D0 0.0D0 2019.0D0 1333.0D0) :EDITOR-RECT
- #(0.0D0 0.0D0 2019.0D0 1121.0D0) :COMPOSER-VISIBLE-P T
+ :MIDDLE-RECT #(178.0D0 0.0D0 1488.0D0 1038.0D0) :EDITOR-RECT
+ #(0.0D0 0.0D0 1488.0D0 873.0D0) :COMPOSER-VISIBLE-P T
  :ASSISTANT-VISIBLE-P T :LISTENER-RECT
- #(0.0D0 1122.0D0 2019.0D0 211.0D0) :LISTENER-COLLAPSED-P NIL
- :UTILITIES-RECT #(2225.0D0 0.0D0 255.0D0 1333.0D0)
- :SELECTED-UTILITIES-TAB-TAG 0 :QUICK-VIEW-COLLAPSED-P T
+ #(0.0D0 874.0D0 1488.0D0 164.0D0) :LISTENER-COLLAPSED-P NIL
+ :UTILITIES-RECT #(1667.0D0 0.0D0 255.0D0 1038.0D0)
+ :SELECTED-UTILITIES-TAB-TAG 6 :QUICK-VIEW-COLLAPSED-P T
  :UTILITIES-COLLAPSED-P NIL)
 
 ;;; composer
 
-"/Users/born/Documents/code/github/ab-lisp/lisp/math.lisp" 
+"/Users/born/Documents/code/github/ab-lisp/lisp/utilities.lisp" 
 
 ;;; list of assistants
 
@@ -56,17 +56,17 @@
 
 (:GRID-MENU-STATE
  (:COMPOSER
-  ("/Users/born/Documents/code/github/ab-lisp/lisp/utilities.lisp"
-   "/Users/born/Documents/code/github/ab-lisp/lisp/quantisation.lisp"
-   "/Users/born/Documents/code/github/ab-lisp/lisp/math.lisp"
-   "/Users/born/Documents/code/github/ab-lisp/lisp/lists.lisp"
-   "/Users/born/Documents/code/github/ab-lisp/lisp/boxes.lisp"
-   "/Users/born/Documents/code/github/ab-lisp/README.md"
-   "/Users/born/Documents/code/github/ab-lisp/todo.txt"
+  ("/Users/born/Documents/code/github/ab-lisp/lisp/envelopes.lisp"
    "/Users/born/Documents/code/github/ab-lisp/lisp/random.lisp"
-   "/Users/born/Documents/code/github/ab-lisp/lisp/envelopes.lisp")
+   "/Users/born/Documents/code/github/ab-lisp/todo.txt"
+   "/Users/born/Documents/code/github/ab-lisp/README.md"
+   "/Users/born/Documents/code/github/ab-lisp/lisp/boxes.lisp"
+   "/Users/born/Documents/code/github/ab-lisp/lisp/lists.lisp"
+   "/Users/born/Documents/code/github/ab-lisp/lisp/math.lisp"
+   "/Users/born/Documents/code/github/ab-lisp/lisp/quantisation.lisp"
+   "/Users/born/Documents/code/github/ab-lisp/lisp/utilities.lisp")
   :ASSISTANTS
-  ("load-package.rtfd/"
-   "/Users/born/Documents/code/github/ab-lisp/lisp/boxes.clufasl")))
+  ("/Users/born/Documents/code/github/ab-lisp/lisp/boxes.clufasl"
+   "load-package.rtfd/")))
 
 ;;; quick-view pathname

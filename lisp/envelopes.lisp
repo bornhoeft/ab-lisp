@@ -174,7 +174,6 @@
         finally (return results)))))
   
 ;; (sample-env-xy '(0 1 1 3 2 2 3 4) 5) => (0 1.0 3/4 2.5 3/2 2.5 9/4 2.5 3 4.0)
-|#
 
 (defun sample-env (env samples)
   "Taking any number of samples from an envelope of x/y-values.
@@ -196,7 +195,7 @@
                     (dist (- end start))
                     (stp (/ dist (- samples 1))))
                (loop repeat samples
-                 for i from start by stp collect i)))
+                 for i from start by stp collect (* 1.0 i))))
            (map-range (a1 a2 b1 b2 s)
              "Calculates the value s according to a range between 
               a1 and a2 into a new range between b1 and b2."
@@ -223,6 +222,75 @@
         into results
         finally (if type? (return results) (return (list rs-x results)))))))
   
-;; (sample-env '(0 1 1 3 2 2 3 4) 5) => ((0 3/4 3/2 9/4 3) (1.0 2.5 2.5 2.5 4.0))
-;; (sample-env '((0 1 2 3) (1 3 2 4)) 5) => ((0 3/4 3/2 9/4 3) (1.0 2.5 2.5 2.5 4.0))
-;; (sample-env '((0 2 3 6) (60 54 83 69)) 5) => ((0 3/2 3 9/2 6) (60.0 55.5 83.0 76.0 69.0))    
+;; (sample-env '(0 1 1 3 2 2 3 4) 5) 
+;; => (0.0 1.0 0.75 2.5 1.5 2.5 2.25 2.5 3.0 4.0)
+;; (sample-env '((0 1 2 3) (1 3 2 4)) 5) 
+;; => ((0.0 0.75 1.5 2.25 3.0) (1.0 2.5 2.5 2.5 4.0))
+|#
+
+(defun sample-env (env samples &key type)
+  "Taking any number of samples from an envelope of x/y-values.
+  Envelope can be a list of xy-value pairs or a list containing 
+  a list of x-values and a list of y-values. Output is the same
+  format as the input by default. It can be declared with the
+  type keyword :xy = 1 list, :x-y = 2 lists."
+  (labels ((split-xy (lst)
+             "Split a list of x/y-values into a list of x-values 
+              and a list of y-values."
+             (loop for i from 0 to (- (length lst) 1) by 2
+               for j from 1 by 2
+               collect (nth i lst) into xlis
+               collect (nth j lst) into ylis
+               finally (return (list xlis ylis))))
+           (resample-x (lst samples)
+             "Resample a list of x-values to any number of 
+              equidistant x-values in the same range."
+             (let* ((start (first lst))
+                    (end (first (reverse lst)))
+                    (dist (- end start))
+                    (stp (/ dist (- samples 1))))
+               (loop repeat samples
+                 for i from start by stp collect (* 1.0 i))))
+           (map-range (a1 a2 b1 b2 s)
+             "Calculates the value s according to a range between 
+              a1 and a2 into a new range between b1 and b2."
+             (* 1.0 (+ b1
+                       (/ (* (- s a1)
+                             (- b2 b1))
+                          (- a2 a1))))))
+    (let* ((type? (numberp (first env)))
+           ;; if type? T then its a xy-list otherwise 2 lists.
+           (xy (if type? (split-xy env)))
+           (xlst (if type? (first xy) (first env)))
+           (ylst (if type? (second xy) (second env)))
+           (rs-x (resample-x xlst samples)))
+      (loop for i in rs-x
+        for j =  (loop 
+          for x in xlst
+          for xc in (cdr xlst)
+          for y in ylst
+          for yc in (cdr ylst)
+          for r1 = (map-range x xc 0 1 i)
+          for r2 = (map-range 0 1 y yc r1)
+          when (>= xc i x) do (return r2))
+        collect i into results
+        collect j into results
+        collect j into y-lis
+        finally (case type
+                  (:xy (return results))
+                  (:x-y (return (list rs-x y-lis)))
+                  (otherwise
+                        (if type? 
+                           (return results) 
+                           (return (list rs-x y-lis)))))))))
+
+;; (sample-env '(0 1 1 3 2 2 3 4) 5) 
+;; => (0.0 1.0 0.75 2.5 1.5 2.5 2.25 2.5 3.0 4.0)
+;; (sample-env '((0 1 2 3) (1 3 2 4)) 5) 
+;; => ((0.0 0.75 1.5 2.25 3.0) (1.0 2.5 2.5 2.5 4.0))
+
+;; (sample-env '(0 1 1 3 2 2 3 4) 5 :type :x-y)
+;; => ((0.0 0.75 1.5 2.25 3.0) (1.0 2.5 2.5 2.5 4.0))
+;; (sample-env '((0 1 2 3) (1 3 2 4)) 5 :type :xy)
+;; =>(0.0 1.0 0.75 2.5 1.5 2.5 2.25 2.5 3.0 4.0)
+  
