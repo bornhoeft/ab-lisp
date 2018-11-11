@@ -157,6 +157,7 @@ In the alternative notation: sigma = sqrt((x0 -<03BC>)2 + (x1 -<03BC>)2 + ... + 
   (* precision (round number precision)))
 
 ;; (round-off 2.134253 .12)
+;; (round-off 2.5 1)
 
 (defun round-even (val)
   "Round to the next even number."
@@ -364,3 +365,11 @@ In the alternative notation: sigma = sqrt((x0 -<03BC>)2 + (x1 -<03BC>)2 + ... + 
 ;; (g/ '(1 2 3) 4) => (1/4 1/2 3/4)
 ;; (g/ '(1 2 3) '(2 3 4)) => (1/2 2/3 3/4)
 ;; (g/ '(1 2 3) '(2 3)) => (1/2 2/3)
+
+(defun round-ord (val)
+(nth-value 0 (floor (+ val 1/2))))
+
+;; (round-ord 3) => 3
+;; (round-ord 2.5) => 3
+;; (round-ord 2.7) => 3
+;; (round-ord 2.3) => 2
