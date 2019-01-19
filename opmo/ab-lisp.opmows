@@ -46,7 +46,7 @@
 
 ;;; composer
 
-"/Users/born/Documents/code/github/ab-lisp/lisp/math.lisp" 
+"/Users/born/Documents/code/github/ab-lisp/lisp/lists.lisp" 
 
 ;;; list of assistants
 
@@ -56,17 +56,17 @@
 
 (:GRID-MENU-STATE
  (:COMPOSER
-  ("/Users/born/Documents/code/github/ab-lisp/lisp/envelopes.lisp"
-   "/Users/born/Documents/code/github/ab-lisp/lisp/random.lisp"
-   "/Users/born/Documents/code/github/ab-lisp/todo.txt"
-   "/Users/born/Documents/code/github/ab-lisp/README.md"
-   "/Users/born/Documents/code/github/ab-lisp/lisp/boxes.lisp"
-   "/Users/born/Documents/code/github/ab-lisp/lisp/lists.lisp"
-   "/Users/born/Documents/code/github/ab-lisp/lisp/math.lisp"
+  ("/Users/born/Documents/code/github/ab-lisp/lisp/utilities.lisp"
    "/Users/born/Documents/code/github/ab-lisp/lisp/quantisation.lisp"
-   "/Users/born/Documents/code/github/ab-lisp/lisp/utilities.lisp")
+   "/Users/born/Documents/code/github/ab-lisp/lisp/math.lisp"
+   "/Users/born/Documents/code/github/ab-lisp/lisp/lists.lisp"
+   "/Users/born/Documents/code/github/ab-lisp/lisp/boxes.lisp"
+   "/Users/born/Documents/code/github/ab-lisp/README.md"
+   "/Users/born/Documents/code/github/ab-lisp/todo.txt"
+   "/Users/born/Documents/code/github/ab-lisp/lisp/random.lisp"
+   "/Users/born/Documents/code/github/ab-lisp/lisp/envelopes.lisp")
   :ASSISTANTS
-  ("/Users/born/Documents/code/github/ab-lisp/lisp/boxes.clufasl"
-   "load-package.rtfd/")))
+  ("load-package.rtfd/"
+   "/Users/born/Documents/code/github/ab-lisp/lisp/boxes.clufasl")))
 
 ;;; quick-view pathname
