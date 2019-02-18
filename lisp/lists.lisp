@@ -668,7 +668,14 @@
 ;; (cycle '(1 2 3 4) 11 :abs t)
 
  
-
+;;; TODO ;;;
 ;;; loop deterministisch dann heuristisch
+
+(defun member? (m lst)
+  (if (member m lst) t nil))
+
+;; (member? 'a '(b 3 45 a c)) => t
+;; (member? '10 '(b 3 45 a c)) => nil
+;; (member? '10 '(b 3 45 a 10)) => t
 
 
