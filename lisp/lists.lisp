@@ -598,22 +598,6 @@
 
 ;; (replace-in-list '(1 2 3 4 5 6 7) 10)
 
-(defun replace-in-list (lis rep)
-  (labels
-      ((replace-nth (n val lis)
-         "Replace position <n> with <val> in <lis>."
-         (loop for i from 0 
-           for j in lis 
-           collect (if (= i n) val j))))
-(let* ((ll (length lis)))
-(loop repeat rep
-  with ls = lis
-  collect ls into reslis
-  do (setf ls (replace-nth (random ll) (random ll) ls))
-  finally (return reslis)))))
-
-;; (replace-in-list '(1 2 3 4 5 6 7) 10)
-
 (defun list-transform (rep lis count)
   (labels
       ((replace-nth (n val lis)
@@ -643,7 +627,8 @@
        do (setf ls (replace-nth (nth i shuffle-ids) (random ll) ls)))
   finally (return reslis)))))
 
-;; (list-transform 3 '(1 2 3 4 5 6 7) 3)
+;; (list-transform 3 '(1 2 3 4 5 6 7) 2) 
+;; => ((1 2 3 4 5 6 7) (1 4 3 4 5 6 0) (1 4 3 4 0 6 3))
 
 
 (defun nestedp (lists)
@@ -664,12 +649,8 @@
     append lis
     end))
 
-;; (cycle '(1 2 3 4) 3)
-;; (cycle '(1 2 3 4) 11 :abs t)
-
- 
-;;; TODO ;;;
-;;; loop deterministisch dann heuristisch
+;; (cycle '(1 2 3 4) 3) => (1 2 3 4 1 2 3 4 1 2 3 4)
+;; (cycle '(1 2 3 4) 11 :abs t) => (1 2 3 4 1 2 3 4 1 2 3)
 
 (defun member? (m lst)
   (if (member m lst) t nil))
@@ -677,5 +658,8 @@
 ;; (member? 'a '(b 3 45 a c)) => t
 ;; (member? '10 '(b 3 45 a c)) => nil
 ;; (member? '10 '(b 3 45 a 10)) => t
+
+;;; TODO ;;;
+;;; loop deterministisch dann heuristisch
 
 
