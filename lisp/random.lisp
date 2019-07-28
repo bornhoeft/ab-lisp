@@ -157,7 +157,7 @@
 ;; (norep-nth-random 10 '(1 2 3 4)) => (3 4 2 3 4 3 4 1 2 4)
 
 ;;; norep nth random mit mod12
-
+;;; NOT WORKING WITH REPEATED ELEMENTS IN LIST E.G. '(4 4 4 5 5 5 6 6 6)
 ;; shuffle list
 (defun shuffle (lis &optional (rep 1) &key (total NIL))
   "Returns a list of the same with the elements randomly reordered"
@@ -170,13 +170,24 @@
        ;; reset cdrlis to lis (see print)	         
        (setf n (nth (random (length cdrlis)) cdrlis))
        ;; takes a random element from cdrlis and
-       (setf cdrlis (remove n cdrlis))
+       (setf cdrlis (remove n cdrlis :count 1))
        ;; remove it
        collect n)))
 
 ;; (shuffle '(1 2 3 4 5 6 7 8)) => (5 4 8 1 3 7 6 2)
 ;; (shuffle '(1 2 3 4 5 6 7 8) 2) => (2 1 5 4 6 3 7 8 6 5 3 8 4 7 2 1)
 ;; (shuffle '(1 2 3 4 5 6 7 8) 13 :total T) => (1 6 2 7 3 4 8 5 7 5 8 6 4)
+
+(defun nshuffle (sequence)
+  "The   Knuth shuffle   (a.k.a. the Fisher-Yates shuffle) is an algorithm 
+  for randomly shuffling the elements of an array: 
+  https://www.rosettacode.org/wiki/Knuth_shuffle#Common_Lisp"
+  (loop for i from (length sequence) downto 2
+    do (rotatef (elt sequence (random i))
+                (elt sequence (1- i))))
+  sequence)
+
+;; (nshuffle '(0 1 2 3 4 5)) => (3 0 2 1 5 4)
 
 ;; unique elements
 (defun unique (lis &optional n)

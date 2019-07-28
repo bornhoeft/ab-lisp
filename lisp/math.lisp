@@ -373,3 +373,23 @@ In the alternative notation: sigma = sqrt((x0 -<03BC>)2 + (x1 -<03BC>)2 + ... + 
 ;; (round-ord 2.5) => 3
 ;; (round-ord 2.7) => 3
 ;; (round-ord 2.3) => 2
+
+(defun round-to (number precision &optional (fun #'round))
+    (let ((div (expt 10 precision)))
+         (/ (funcall fun (* number div)) div)))
+;; The optional parameter "fun" can be one of #'floor, #'ceil, #'truncate
+
+;; (round-to 1234.4567 0) => 1234
+;; (round-to 1234.4567 1) => 2469/2
+;; (float (round-to 1234.4567 1 #'floor)) => 1234.4
+;; (float (round-to 1234.4567 1 #'ceiling)) => 1234.5
+;; (float (round-to 1234.4567 1 #'truncate)) => 1234.4
+
+
+;;; HOW IS THIS WORKING?
+(defun numdigits (n)
+      (if (< -10 n 10)
+         1
+         (1+ (numdigits (truncate n 10)))))
+
+;; (numdigits 2.345)

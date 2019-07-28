@@ -476,23 +476,23 @@
 (defun signum-reduce (length)
   (maybe-map (lambda (pattern)
                (prog (out element store previous)
-                  (setf previous (signum (car pattern)))
-                  (setf store 0)
-                loop
-                  (cond ((null pattern)
-                         (push store out)
-                         (return (nreverse out))))
-                  (setf element (car pattern))
-                  (cond ((not (= previous (signum element)))
-                         (push store out)
-                         (setf store 0)
-                         (setf previous (signum element))))
-                  (setf store (+ store element))
-                  (pop pattern)
-                  (go loop)))
+                 (setf previous (signum (car pattern)))
+                 (setf store 0)
+                 loop
+                 (cond ((null pattern)
+                        (push store out)
+                        (return (nreverse out))))
+                 (setf element (car pattern))
+                 (cond ((not (= previous (signum element)))
+                        (push store out)
+                        (setf store 0)
+                        (setf previous (signum element))))
+                 (setf store (+ store element))
+                 (pop pattern)
+                 (go loop)))
              length))
 
-;; ;; (signum-reduce '(-1 -1 1 1 1 1 -1 -1))
+;; (signum-reduce '(-1 -1 1 1 1 1 -1 -1))
 
 (defun divide-range (start end samples &key rounded)
   "n equally spaced samples between (including) start and end."
@@ -544,34 +544,34 @@
   Grps can be a number or a list of numbers. 
   If inlis is not exhausted by grps, the remaining values are ignored. 
   If inlis is exceeded by grps, the last group is respectively shortened."
-(labels 
-    ((dx-x (ls &optional (st 0))
-       "Constructs a list of numbers from <start> with the consecutives intervals of <ls>."
-       (let ((r st))     
-         (loop for i in ls
-           for n = (+ r i)
-           collect n into reslis
-           do (setf r n)
-           finally (return (cons st reslis)))))
-     (group-number (num grp)
-        "Make a list with grp numbers fitting in num. 
-       If grp does not fit in num the last entry in the list is respectively reduced."
-       (let* ((rest (rem num grp))
-              (div (/ (- num rest) grp)))
-         (loop repeat div
-           collect grp into reslis
-           finally (return 
-                    (if (zerop rest) 
-                      reslis
-                      (reverse (cons rest reslis))))))))
-(let* ((ll (length inlis))
-      (pl (if (numberp grps) 
-            (dx-x (group-number ll grps))
-            (dx-x grps))))
-  (loop 
-    for i in pl
-    for j in (cdr pl)
-    collect (subseq inlis i (if (> j ll) ll j))))))
+  (labels 
+      ((dx-x (ls &optional (st 0))
+         "Constructs a list of numbers from <start> with the consecutives intervals of <ls>."
+         (let ((r st))     
+           (loop for i in ls
+             for n = (+ r i)
+             collect n into reslis
+             do (setf r n)
+             finally (return (cons st reslis)))))
+       (group-number (num grp)
+         "Make a list with grp numbers fitting in num. 
+         If grp does not fit in num the last entry in the list is respectively reduced."
+         (let* ((rest (rem num grp))
+                (div (/ (- num rest) grp)))
+           (loop repeat div
+             collect grp into reslis
+             finally (return 
+                      (if (zerop rest) 
+                        reslis
+                        (reverse (cons rest reslis))))))))
+    (let* ((ll (length inlis))
+           (pl (if (numberp grps) 
+                 (dx-x (group-number ll grps))
+                 (dx-x grps))))
+      (loop 
+        for i in pl
+        for j in (cdr pl)
+        collect (subseq inlis i (if (> j ll) ll j))))))
 
 ;; (group-list '(1 2 3 4 5 6 7 8 9) 3) => ((1 2 3) (4 5 6) (7 8 9))
 ;; (group-list '(1 2 3 4 5 6 7 8 9) 2) => ((1 2) (3 4) (5 6) (7 8) (9))
@@ -630,7 +630,6 @@
 ;; (list-transform 3 '(1 2 3 4 5 6 7) 2) 
 ;; => ((1 2 3 4 5 6 7) (1 4 3 4 5 6 0) (1 4 3 4 0 6 3))
 
-
 (defun nestedp (lists)
   (if (listp (second lists)) t
       nil))
@@ -659,7 +658,58 @@
 ;; (member? '10 '(b 3 45 a c)) => nil
 ;; (member? '10 '(b 3 45 a 10)) => t
 
-;;; TODO ;;;
-;;; loop deterministisch dann heuristisch
+(defun members (mlsts lsts)
+  (let ((ml (if (numberp (first mlsts)) (list mlsts) mlsts))
+        (ll (if (numberp (first lsts)) (list lsts) lsts)))
+    (loop for i in ml collect
+      (loop for m in ll collect
+        (loop for j in i collect
+          (if (member j m) t nil) into reslis
+          finally (return (if (member nil reslis) nil t)))) into result
+      finally (return (if (equal (length result) 1)
+                        (first result)
+                        result)))))
 
+;; (members '(1 2) '(1 2 3 4 5)) => (t)
+;; (members '((1 2) (3 7)) '((1 2 3 4 5) (4 5 6 7 8))) => ((t nil) (nil nil))
+;; (members '(1 2) '((1 2 3 4 5) (4 5 6 7 8))) => (t nil)
+;; (members '((1 2) (3 7)) '(1 2 3 4 5)) => ((t) (nil))
 
+(defun members2 (mlsts lsts)
+  (let ((ml (if (numberp (first mlsts)) (list mlsts) mlsts))
+        (ll (if (numberp (first lsts)) (list lsts) lsts)))
+    (loop for i in ml collect
+      (remove nil (loop for m in ll collect
+                    (loop for j in i collect
+                      (if (member j m) t nil) into reslis
+                      finally (return (when (not (member nil reslis)) 
+                                        (first m)))))) into result
+      finally (return (if (equal (length result) 1)
+                        (first result)
+                        result)))))
+
+;; (members2 '((1 2) (4 7)) '((1 2 3 4 5) (4 5 6 7 8)))
+
+(defun trim-list-sum (lst sum &key (pos nil))
+  (let* ((lsum (reduce #'+ (mapcar #'abs lst)))
+         (dif (- sum lsum))
+         (tst (minusp dif))
+         (val (if tst
+                (round (+ sum dif))
+                dif)))
+    (if (not (zerop dif))
+      (append lst (list
+                   (* (if pos 1 -1)
+                      (if tst
+                        (-  dif (* -1 val))
+                        dif))))
+      lst)))
+                      
+;; (trim-list-sum '(-0.25 0.25 0.25 0.25 0.25) 1)
+;; => (-0.25 0.25 0.25 0.25 0.25 -0.75) sum old list > 1 => new list sum 2
+;; (trim-list-sum '(-0.25  0.25) 1) 
+;; => (-0.25 0.25 0.5) sum old list < 1 => new list sum 1
+;; (trim-list-sum '(-0.25 0.25 0.25 -0.25) 1) 
+;; => (-0.25 0.25 0.25 -0.25) sum old list = 1 => new list sum 1
+;; (trim-list-sum '(-0.25 0.25 0.25 0.25 0.25) 1 :pos t)
+;; (-0.25 0.25 0.25 0.25 0.25 0.75) added value positive

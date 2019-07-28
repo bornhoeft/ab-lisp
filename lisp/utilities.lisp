@@ -160,3 +160,12 @@
 ;; (indexes 3 '(2 5 4 6 3 7 8 3) :type :end) => 7
 ;; (indexes 3 '(2 5 4 6 3 7 8 3) :type :start) => 4
 
+(defun wavelength (freq)
+  (let* ((period (/ 1000 freq))
+         (fr (/ 1 period))
+         (soundspeed 343)) ; m/sec
+    (/ (/ soundspeed fr) 10.0)))
+
+;; (wavelength 800)
+        
+
