@@ -57,7 +57,7 @@
 ;; (flat-length '((1 2 (3 4) 3 5 6) (3 6 ((4 5)) 7) (3 6 4 7 3))) => 17
 
 (defun flat-last-list (lis)
-"remove additional parens until the last list"
+"remove additional parentheses until the last list"
 (let ((l lis))
 (loop while (= (length l) 1) do
   (setq l (first l))
@@ -221,16 +221,6 @@
   (if (or (null list) (length=1 list))
       list
     (list* (first list) item (insert-between item (rest list)))))
-    
-(defun reflect (hi lo values)
-  (loop for i in values
-        with x = (abs (- hi lo))
-        for y = (mod i x)
-        collect
-        (if (evenp (floor (/ i x))) y (- x y)) into reslis
-        finally (return (mapcar #'(lambda (x) (+ x  lo)) reslis))))
-;; (reflect 5 -1 '(-5 9 6 2 -4 -5 0 6 9 -5 -3 -5 9 -10 0 2 7 4 5 -2 2))
-;; => (4 2 5 1 3 4 -1 5 2 4 2 4 2 1 -1 1 4 3 4 1 1)
 
 (defun fibonacci-sum (n)
   "Tail-recursive Fibonacci number function"
@@ -242,10 +232,11 @@
 ;; (fibonacci-sum 40) => 102334155
 
 (defun count-all (lst)
+  "count the number of different elements according to their position
+  in lst."
   (let ((rd-lst (remove-duplicates lst :test #'equalp)))
     (mapcar #'(lambda (x) (count x lst)) rd-lst)))
 
-;;; ???
 ;; (count-all '(3 4 2 5 5 7 6 8 3 4 2 5 1 6 4 7)) => (1 2 2 3 1 2 3 2)
 
 (defun identical-lists? (lis1 lis2)

@@ -217,11 +217,13 @@
                 finally (return reslis))))
     (loop repeat n 
       collect (nth (random (- (length wlis) 1)) wlis))))
+
 ;; (weighted-random 10 '(1 10 2 20 3 70)) => (1 2 3 3 3 3 3 3 2 3)
 
 (defun random-element (list)
   "Return some element of the list, chosen at random."
   (nth (random (length list)) list))
+
 ;; (random-element '(3 9 6 5 7 1 3 4 6 4 7 8)) => 9
   
 (defun sample-with-replacement (n population)
@@ -229,6 +231,7 @@
     (dotimes (i n) 
       (push (nth (random (- (length population) 1)) population) result))
     result))
+
 ;; (sample-with-replacement 10 '(1 2 3 4 5 6 7 8)) => (1 5 2 2 2 6 6 5 6 5)
 
 (defun sample-without-replacement 
@@ -240,4 +243,32 @@
 	 (cons (first population) (sample-without-replacement
 				   (- n 1) (rest population) (- m 1))))
 	(t (sample-without-replacement n (rest population) (- m 1)))))
+
 ;; (sample-without-replacement 10 '(1 2 3 4 5 6 7 8 9 10 11 12)) => (1 2 4 6 7 8 9 10 11 12)
+
+(defun brownian-single-step (n stp weight start)
+  (let ((wlis (append 
+                (make-list weight :initial-element stp)
+                (make-list (- 100 weight) :initial-element (* -1 stp)))))
+    (loop repeat n
+      with s = start
+      collect s into reslis
+      do (setf s (+ s (nth (random (- (length wlis) 1)) wlis)))
+      finally (return reslis))))
+
+;; (brownian-single-step 10 1 40 10)
+
+(defun brownian (n weight-list start)
+  (let ((wlis (loop for j from 0 below (- (length weight-list) 1) by 2
+                append 
+                (make-list (nth (+ 1 j) weight-list) 
+                           :initial-element (nth j weight-list)) 
+                into reslis
+                finally (return reslis))))
+    (loop repeat n
+      with s = start
+      collect s into reslis
+      do (setf s (+ s (nth (random (- (length wlis) 1)) wlis)))
+      finally (return reslis))))
+
+;; (brownian 40 '(1 30 -1 30 2 20 -2 20) 10)

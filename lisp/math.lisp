@@ -256,6 +256,9 @@ In the alternative notation: sigma = sqrt((x0 -<03BC>)2 + (x1 -<03BC>)2 + ... + 
 			   (t (abs (/ (* m n) (gcd m n))))))
 		   args :initial-value 1))
 
+;; (lcm2 3 4 5 6) => 60
+;; (lcm2 3 4 6) => 12
+
 (defun lcm-lst (lst)
   "Least common multiple of numbers in lst."
   (apply #'lcm lst))
