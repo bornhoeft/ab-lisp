@@ -272,3 +272,56 @@
       finally (return reslis))))
 
 ;; (brownian 40 '(1 30 -1 30 2 20 -2 20) 10)
+
+(defun brownian-borders (n weight-list start low high)
+  (let ((wlis (loop for j from 0 below (- (length weight-list) 1) by 2
+                append 
+                (make-list (nth (+ 1 j) weight-list) 
+                           :initial-element (nth j weight-list)) 
+                into reslis
+                finally (return reslis))))
+    (loop repeat n
+      with s = start
+      do (setf s (if (< s low) 
+                     (+ low (abs (- s low)))
+                     (if (> s high) 
+                         (- high (abs (- s high)))
+                         s)))
+      collect s into reslis
+      do (setf s (+ s (nth (random (length wlis)) wlis)))
+      finally (return reslis))))
+
+;; (brownian-borders 50 '(1 40 -1 60 2 20) 10 5 15)
+
+(defun random-sum1 (lst-sum low high)
+  "Collects random numbers between low and high until lst-sum. If the result is > lst sum
+  the last number is truncated to fit lst-sum."
+  (loop
+    with s
+    collect (+ low (random (- high low))) into reslis
+    do (setf s (reduce #'+ reslis))
+    until (>= s lst-sum)
+    finally (return
+             (if (> s lst-sum)
+               (append (butlast reslis) 
+                       (list (- lst-sum (reduce #'+ (butlast reslis)))))
+                      reslis))))
+
+;; (random-sum1 20 2 5)
+
+(defun random-sum2 (lst-sum lis)
+  "Try to build a list containing the numbers in lis with the sum of lst-sum."
+  (loop
+    with sum
+    for x = (loop
+               with s
+               collect (nth (random (length lis)) lis) into reslis
+               do (setf s (reduce #'+ reslis))
+               until (>= s lst-sum)
+               finally (return reslis))
+    do (setf sum (reduce #'+ x))
+    do (print x)
+    until (= sum lst-sum)
+    finally (return x)))
+
+;; (random-sum2 20 '(7 3 8))

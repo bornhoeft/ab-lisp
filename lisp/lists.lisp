@@ -704,3 +704,26 @@
 ;; => (-0.25 0.25 0.25 -0.25) sum old list = 1 => new list sum 1
 ;; (trim-list-sum '(-0.25 0.25 0.25 0.25 0.25) 1 :pos t)
 ;; (-0.25 0.25 0.25 0.25 0.25 0.75) added value positive
+
+(defun half-list (lists &key gsh)
+  "Split list in half, making 2 lists. With odd numbered list,
+  the first half is one element longer than the second."
+  (let ((ll (if (listp (first lists)) lists (list lists))))
+    (loop for i in ll
+      for len  = (length i)
+      for hlen = (/ len 2)
+      for flen = (floor hlen)
+      for clen = (ceiling hlen)
+      if (= len 1)
+      collect i and collect ()
+      else
+      if (evenp len)
+      collect (subseq i 0 hlen) and collect (subseq i hlen)
+      else
+      if gsh ; greater second half
+      collect (subseq i 0 flen) and collect (subseq i flen)
+      else
+      collect (subseq i 0 clen)  and collect (subseq i clen))))
+
+;; (half-list '((1) (2 3 4 5) (3 4 5 6 7) (7 5 8 7 9 0 34)))
+;; (half-list '((1) (2 3 4 5) (3 4 5 6 7)) :gsh t)
