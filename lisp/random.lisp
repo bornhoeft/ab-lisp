@@ -325,3 +325,46 @@
     finally (return x)))
 
 ;; (random-sum2 20 '(7 3 8))
+
+;;; https://ccrma.stanford.edu/CCRMA/Courses/220b/Lectures/4/Examples/probability.lisp
+;;; Some probability distributions
+
+;; Uniform
+
+(defun uniform ()
+  (random 1.0))
+
+;; Linear
+
+(defun linear ()
+  (let* ((ua (random 1.0))
+	 (ub (random 1.0)))
+    (if (< ua ub) ua ub)))
+
+;; Triangular
+
+(defun triangular ()
+  (let* ((ua (random 1.0))
+	 (ub (random 1.0)))
+    (* 0.5 (+ ua ub))))
+
+;; Exponential
+
+(defun exponential (delta)
+  (/ (- (log (random 1.0))) delta))
+
+;; Bilateral exponential
+
+(defun biexp (delta)
+  (let* ((val (random 2.0)))
+    (if (> val 1.0)
+	(/ (- (log val)) delta)
+      (- (/ (- (log (- 2.0 val))) delta)))))
+  
+;; Gaussian 
+
+(defun gaussian (sigma mu &optional (n 12))
+  (let* ((novr (/ n 2))
+	 (scale (/ (sqrt (/ n 12))))
+	 (sum (loop repeat n sum (random 1.0))))
+    (+ (* sigma scale (- sum novr)) mu)))

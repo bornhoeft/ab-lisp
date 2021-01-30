@@ -386,13 +386,23 @@ In the alternative notation: sigma = sqrt((x0 -<03BC>)2 + (x1 -<03BC>)2 + ... + 
 ;; (round-to 1234.4567 1) => 2469/2
 ;; (float (round-to 1234.4567 1 #'floor)) => 1234.4
 ;; (float (round-to 1234.4567 1 #'ceiling)) => 1234.5
-;; (float (round-to 1234.4567 1 #'truncate)) => 1234.4
+;; (float (round-to 1234.4567 2 #'truncate)) => 1234.45
 
+;;; Factorial
+;;; https://de.wikipedia.org/wiki/Fakultät_(Mathematik)
 
-;;; HOW IS THIS WORKING?
-(defun numdigits (n)
-      (if (< -10 n 10)
-         1
-         (1+ (numdigits (truncate n 10)))))
+(defun fac (num)
+  "(fac 7) = 5040 = 1*2*3*4*5*6*7"
+  (let ((lis (loop for i from 1 to num collect i)))
+(apply '* lis)))
 
-;; (numdigits 2.345)
+;; (fac 7) = 5040 = 1*2*3*4*5*6*7
+
+;;; Gaussche Summenformel
+;;; https://de.wikipedia.org/wiki/Gaußsche_Summenformel
+
+(defun gauss (num)
+  "(gauss 6) = 21 = 1+2+3+4+5+6"
+  (/ (* num (+ 1 num)) 2))
+
+;; (gauss 6) = 21 = 1+2+3+4+5+6
