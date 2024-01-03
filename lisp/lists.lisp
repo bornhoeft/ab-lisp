@@ -99,13 +99,31 @@
 
 (defun scaling-sum (lis new-sum)
   (let* ((sum (reduce #'+ lis))
-    (sum-factor (/ new-sum sum)))
+         (sum-factor (/ new-sum sum)))
     (loop for i in lis
-      collect (* sum-factor i))))
+          collect (* sum-factor i))))
 
 ;; (scaling-sum '(1 2 3 4 5) 30.0) => (2.0 4.0 6.0 8.0 10.0)
 ;; (reduce #'+ (scaling-sum '(1 2 3 4 5) 30.0)) => 30.0
 ;; (reduce #'+ (scaling-sum '(4 6 5 8 7 11 2 3 4.5 11.2) 100.0)) => (6.482982 9.724473 8.103727 12.965964 11.345219 17.828201 3.241491 4.8622365 7.293355 18.15235)
+
+(defun scale-list (lst scale-sum &key (rounded nil))
+  " 
+Scale all numbers of lst to a given sum.
+
+Examples:
+(scale-list '(1 2 3 4 5) 25)
+=> (1.6666666 3.3333333 5.0 6.6666665 8.333333)
+Proof: (sum (scale-list '(1 2 3 4 5) 25)) => 25.0
+With rounded numbers:
+(scale-list '(1 2 3 4 5) 25 :rounded t) => (2 3 5 7 8)
+"
+  (let ((result
+  (loop for i in lst
+          collect (* 1.0 (* scale-sum 
+                         (/ i (reduce '+ lst)))))))
+    (if rounded (mapcar 'round result)
+      result)))
 
 (defun lengths (ls)
   "Returns the length of <ls>. <ls> can be a list of lists."
@@ -146,6 +164,7 @@
 
 ;; (nth? 7 '(3 5 2 6 4 7 8)) => 5
 ;; Lisp: (position 7 '(3 5 2 6 4 7 8)) => 5
+;; Lisp: (elt '(3 5 2 6 4 7 8) 5) => 7
            
 (defun intervals (lis interv start)
   "returns the indexes in a list for with a specific interval (interv).
@@ -360,7 +379,8 @@
 ;; (permute-list '(1 2 3 4 5 6) 2 4 :back) => > Error: Wrong direction specifier!
 
 (defun number-of-elements (lis)
-  "Compute the number of elements in a list and returns a list of lists containing 
+  "Compute the number of different elements in a list 
+  and returns a list of lists containing 
   the element and the number of occurrences."
   (let ((l (sort (remove-duplicates lis) #'<)))
     (loop for i in l
@@ -618,7 +638,7 @@
        do (setf ls (replace-nth (nth i shuffle-ids) (random ll) ls)))
   finally (return reslis)))))
 
-;; (list-transform 3 '(1 2 3 4 5 6 7) 2) 
+;; (list-transform 3 '(1 2 3 4 5 6 7) 1) 
 ;; => ((1 2 3 4 5 6 7) (1 4 3 4 5 6 0) (1 4 3 4 0 6 3))
 
 (defun nestedp (lists)
@@ -727,3 +747,53 @@
 
 ;; (half-list '((1) (2 3 4 5) (3 4 5 6 7) (7 5 8 7 9 0 34)))
 ;; (half-list '((1) (2 3 4 5) (3 4 5 6 7)) :gsh t)
+
+(defun how-many (lst1 lst2)
+  
+  "How many times an elements from the first list
+  occur in the second list?
+  
+  EXAMPLE:
+  (how-many '(1 2 3 4) '(1 3 4 3 5)) => (1 0 2 1)"
+  
+  (loop for i in lst1
+    collect
+    (loop for j in lst2
+      with count = 0
+      when (= j i)
+      do (setf count (+ 1 count))
+      finally (return count))))
+
+(defun similarity (lst1 lst2)
+
+  "Sum all similarities between the first 
+  and the second list.
+
+  EXAMPLE: (similarity '(1 2 3 4) '(1 3 4 3 5)) => 4"
+  
+  (reduce #'+
+          (loop for i in lst1
+            collect
+            (loop for j in lst2
+              with count = 0
+              when (= j i)
+              do (setf count (+ 1 count))
+              finally (return count)))))
+
+
+;;; only keyword item and position
+(defun position-insert-seq (&key list insert item)
+  (let ((pos (car (position-item item alist))))
+    (position-replace (gen-integer pos (+ pos (1- (length insert)))) insert alist)))
+
+
+(setf alist '(0 0 0 0 0 0 1 0 2 0 0 0 3 5 7))
+(setf insert '(a b c d))
+
+(position-insert-seq :list '(0 0 0 0 0 0 1 0 2 0 0 0 3 5 7)
+                 :insert '(a b c d)
+                 :item 2)
+
+=> (0 0 0 0 0 0 1 0 a b c d 3 5 7)
+
+

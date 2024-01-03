@@ -67,6 +67,7 @@
   (loop for i in lis collect (quant i steps)))
 ;; (quant-list '(1.25346 5.43765) 0.5)
 
+
 (defun raster (lis quant-lis)
   (loop for i in lis collect
     (loop for j in quant-lis

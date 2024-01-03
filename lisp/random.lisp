@@ -29,7 +29,7 @@
 ;;; Random functions
 
 (defun rand (low high &optional (digits 6))
- "Return alues chosen at random between low and high including the limits.
+ "Return values chosen at random between low and high including the limits.
   If the numbers given are integers the result will be an integer."
   (let* ((dig (expt 10 digits))
          (hi (* high dig))
@@ -274,26 +274,37 @@
 ;; (brownian 40 '(1 30 -1 30 2 20 -2 20) 10)
 
 (defun brownian-borders (n weight-list start low high)
+  "Arguments:
+
+   n - number of values to create
+   weight - a list of pairs of value and weight
+   start - starting value
+   low - low limit at which the motion is reflected
+   high - high limit at which the motion is reflected.
+
+   Example:
+
+   (brownian-borders 50 '(1 40 -1 60 2 20) 10 5 15)"
+
   (let ((wlis (loop for j from 0 below (- (length weight-list) 1) by 2
-                append 
-                (make-list (nth (+ 1 j) weight-list) 
-                           :initial-element (nth j weight-list)) 
-                into reslis
-                finally (return reslis))))
+                    append 
+                      (make-list (nth (+ 1 j) weight-list) 
+                                 :initial-element (nth j weight-list)) 
+                      into reslis
+                    finally (return reslis))))
     (loop repeat n
-      with s = start
-      do (setf s (if (< s low) 
-                     (+ low (abs (- s low)))
-                     (if (> s high) 
-                         (- high (abs (- s high)))
+          with s = start
+          do (setf s (if (< s low) 
+                         (+ low (abs (- s low)))
+                       (if (> s high) 
+                           (- high (abs (- s high)))
                          s)))
-      collect s into reslis
-      do (setf s (+ s (nth (random (length wlis)) wlis)))
-      finally (return reslis))))
+          collect s into reslis
+          do (setf s (+ s (nth (random (length wlis)) wlis)))
+          finally (return reslis))))
 
-;; (brownian-borders 50 '(1 40 -1 60 2 20) 10 5 15)
 
-(defun random-sum1 (lst-sum low high)
+(defun random-sum1 (lst-sum low high)  
   "Collects random numbers between low and high until lst-sum. If the result is > lst sum
   the last number is truncated to fit lst-sum."
   (loop

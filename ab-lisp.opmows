@@ -1,0 +1,12 @@
+("workspace-view/current"
+ "lisp/utilities.lisp"
+)
+
+("workspace-view/history"
+ (("lisp/lists.lisp" "lists.lisp") ("lisp/math.lisp" "math.lisp") ("lisp/utilities.lisp" "utilities.lisp") ("lisp/quantisation.lisp" "quantisation.lisp") ("lisp/random.lisp" "random.lisp") ("lisp/spectral.lisp" "spectral.lisp"))
+)
+
+("workspace-view/layout-ratios"
+ (1 (OM-CAPI::MAIN 276 NIL 767) (OM-CAPI::EDITOR-AND-LISTENER-LAYOUT 867 NIL 414))
+)
+

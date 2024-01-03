@@ -179,7 +179,6 @@ In the alternative notation: sigma = sqrt((x0 -<03BC>)2 + (x1 -<03BC>)2 + ... + 
 ;; (round-even 5.5) => 6
 ;; (round-even 4.99) => 4
 
-
 (defun root (n x)
   "(root 12 2) => 1.0594632 (semitone)"
   (expt x (/ 1 n)))
@@ -406,3 +405,13 @@ In the alternative notation: sigma = sqrt((x0 -<03BC>)2 + (x1 -<03BC>)2 + ... + 
   (/ (* num (+ 1 num)) 2))
 
 ;; (gauss 6) = 21 = 1+2+3+4+5+6
+
+(defun int-div (num)
+  "All possible integer divisions of num: 
+  (int-div 42) => (1 2 3 6 7 14 21 42)"
+  (loop for i from num downto 1
+    for d = (/ num i)
+    when (integerp d)
+    collect d))
+
+;; (int-div 68) => (1 2 4 17 34 68)

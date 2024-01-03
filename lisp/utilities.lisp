@@ -165,7 +165,6 @@
          (fr (/ 1 period))
          (soundspeed 343)) ; m/sec
     (/ (/ soundspeed fr) 10.0)))
-
 ;; (wavelength 800)     
 
 (defun ulam-spiral (n)
@@ -184,6 +183,24 @@
 (defun primep (n)
   (when (> n 1) (loop for a from 2 to (isqrt n)
                       never (zerop (mod n a)))))
-
 ;; (ulam-spiral 60)
+
+(defun up-down-counter (reps range)
+  (loop for i from 0 to (- reps 1)
+    for j = (mod i range)
+    with id = 0
+    do (when (equal 0 j)
+         (setf id (if (= id 1) 0 1)))
+    with in = 0
+    collect in
+    do (if (= id 1) (incf in) (decf in))  
+    ))
+;; (up-down-counter 12 4) => (0 1 2 3 4 3 2 1 0 1 2 3)
+
+(defun lensum (lst)
+  "Length and sum of lst.
+  Example:
+  (lensum '(1 2 3 4 5 6)) => (21 6)"
+  (list (sum lst) (length lst)))
+
 
