@@ -410,8 +410,9 @@ In the alternative notation: sigma = sqrt((x0 -<03BC>)2 + (x1 -<03BC>)2 + ... + 
   "All possible integer divisions of num: 
   (int-div 42) => (1 2 3 6 7 14 21 42)"
   (loop for i from num downto 1
-    for d = (/ num i)
-    when (integerp d)
-    collect d))
+        for d = (/ num i)
+        when (integerp d)
+          collect d))
 
 ;; (int-div 68) => (1 2 4 17 34 68)
+

@@ -1,12 +1,12 @@
 ("workspace-view/current"
- "lisp/utilities.lisp"
+ "lisp/pitchclass.lisp"
 )
 
 ("workspace-view/history"
- (("lisp/lists.lisp" "lists.lisp") ("lisp/math.lisp" "math.lisp") ("lisp/utilities.lisp" "utilities.lisp") ("lisp/quantisation.lisp" "quantisation.lisp") ("lisp/random.lisp" "random.lisp") ("lisp/spectral.lisp" "spectral.lisp"))
+ (("lisp/lists.lisp" "lists.lisp") ("lisp/math.lisp" "math.lisp") ("lisp/utilities.lisp" "utilities.lisp") ("lisp/quantisation.lisp" "quantisation.lisp") ("lisp/random.lisp" "random.lisp") ("lisp/spectral.lisp" "spectral.lisp") ("/Users/bornhoeft/Documents/code/github/ab-opmo/@Todo/om-TODO.opmo" "om-TODO.opmo") ("/Users/bornhoeft/Documents/code/github/sem-opmo/18-Lisp/01-Language/05-Iteration.lisp" "05-Iteration.lisp") ("/Users/bornhoeft/Documents/code/github/sem-opmo/05-Iteration/02.loop.opmo" "02.loop.opmo") ("/Users/bornhoeft/Documents/code/github/sem-opmo/18-Lisp/02-Functions/05-Testing.lisp" "05-Testing.lisp") ("/Users/bornhoeft/Documents/code/github/sem-opmo/18-Lisp/02-Functions/06-Random.lisp" "06-Random.lisp") ("/Users/bornhoeft/Documents/code/github/ab-opmo/frequency/tenney-crystal/crystal-growth.opmo" "crystal-growth.opmo") ("lisp/pitchclass.lisp" "pitchclass.lisp"))
 )
 
 ("workspace-view/layout-ratios"
- (1 (OM-CAPI::MAIN 276 NIL 767) (OM-CAPI::EDITOR-AND-LISTENER-LAYOUT 867 NIL 414))
+ (1 (OM-CAPI::MAIN 295 NIL 813) (OM-CAPI::EDITOR-AND-LISTENER-LAYOUT 766 NIL 118))
 )
 
