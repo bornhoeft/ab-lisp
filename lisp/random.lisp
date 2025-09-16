@@ -158,9 +158,17 @@
 
 ;;; norep nth random mit mod12
 ;;; NOT WORKING WITH REPEATED ELEMENTS IN LIST E.G. '(4 4 4 5 5 5 6 6 6)
+
 ;; shuffle list
 (defun shuffle (lis &optional (rep 1) &key (total NIL))
-  "Returns a list of the same with the elements randomly reordered"
+
+"Returns a list of the same with the elements randomly reordered
+ex:
+(shuffle '(1 2 3 4 5 6 7 8)) => (5 4 8 1 3 7 6 2)
+(shuffle '(1 2 3 4 5 6 7 8) 2) => (2 1 5 4 6 3 7 8 6 5 3 8 4 7 2 1)
+(shuffle '(1 2 3 4 5 6 7 8) 13 :total T) 
+=> (1 6 2 7 3 4 8 5 7 5 8 6 4)"
+
   (let* ((llis (length lis))
 	 (end (if total rep (* rep llis))))
     (loop with cdrlis and n
@@ -174,20 +182,18 @@
        ;; remove it
        collect n)))
 
-;; (shuffle '(1 2 3 4 5 6 7 8)) => (5 4 8 1 3 7 6 2)
-;; (shuffle '(1 2 3 4 5 6 7 8) 2) => (2 1 5 4 6 3 7 8 6 5 3 8 4 7 2 1)
-;; (shuffle '(1 2 3 4 5 6 7 8) 13 :total T) => (1 6 2 7 3 4 8 5 7 5 8 6 4)
-
 (defun nshuffle (sequence)
-  "The   Knuth shuffle   (a.k.a. the Fisher-Yates shuffle) is an algorithm 
-  for randomly shuffling the elements of an array: 
-  https://www.rosettacode.org/wiki/Knuth_shuffle#Common_Lisp"
+
+"The Knuth shuffle (a.k.a. the Fisher-Yates shuffle) 
+is an algorithm for randomly shuffling the elements of an array: 
+https://www.rosettacode.org/wiki/Knuth_shuffle#Common_Lisp
+ex: 
+(nshuffle '(0 1 2 3 4 5)) => (3 0 2 1 5 4) "
+
   (loop for i from (length sequence) downto 2
     do (rotatef (elt sequence (random i))
                 (elt sequence (1- i))))
   sequence)
-
-;; (nshuffle '(0 1 2 3 4 5)) => (3 0 2 1 5 4)
 
 ;; unique elements
 (defun unique (lis &optional n)
@@ -305,8 +311,9 @@
 
 
 (defun random-sum1 (lst-sum low high)  
-  "Collects random numbers between low and high until lst-sum. If the result is > lst sum
-  the last number is truncated to fit lst-sum."
+"Collects random numbers between low and high until lst-sum. 
+If the result is > lst sum
+the last number is truncated to fit lst-sum."
   (loop
     with s
     collect (+ low (random (- high low))) into reslis
@@ -321,7 +328,8 @@
 ;; (random-sum1 20 2 5)
 
 (defun random-sum2 (lst-sum lis)
-  "Try to build a list containing the numbers in lis with the sum of lst-sum."
+"Try to build a list containing the numbers in lis 
+with the sum of lst-sum."
   (loop
     with sum
     for x = (loop
@@ -379,3 +387,71 @@
 	 (scale (/ (sqrt (/ n 12))))
 	 (sum (loop repeat n sum (random 1.0))))
     (+ (* sigma scale (- sum novr)) mu)))
+
+
+(defun list-to-sum (nval sum)
+"
+Generate a non-decreasing list of NVAL positive integers 
+whose sum is SUM,using normalized weights 
+(1..N normalized to sum 1).
+
+ex:
+(list-to-sum 4 27) => (3 5 8 11)
+(reduce #'+ (list-to-sum 4 27)) => 27
+
+(list-to-sum 14 27)
+=> (1 1 1 1 1 2 2 2 2 2 3 3 3 3)
+(reduce #'+ (list-to-sum 14 27)) => 27
+
+(list-to-sum 27 27)
+=> (1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1)
+(reduce #'+ (list-to-sum 27 27)) => 27
+"
+  (unless (and (integerp nval) (plusp nval) (integerp sum) 
+               (>= sum nval))
+    (error "SUM must be >= NVAL; both must be positive."))
+
+  ;; 1) Create normalized weights
+  (let* ((weights (loop for i from 1 to nval collect i))
+         (total (reduce #'+ weights))
+         (normalized (mapcar 
+                      (lambda (x) (/ (float x) total)) weights))
+
+         ;; 2) Scale weights to the target sum
+         (scaled (mapcar 
+                  (lambda (x) (max 1 (round (* x sum)))) normalized))
+         (v (coerce scaled 'vector))) 
+    ;; convert to array for in-place adjustment
+
+    ;; 3) Correct sum exactly while preserving non-decreasing order
+    (let ((tot (reduce #'+ v)))
+      (cond
+       ;; too large -> reduce from right, keeping monotonicity
+       ((> tot sum)
+        (let ((k (- tot sum)))
+          (loop while (> k 0) do
+                  (let ((changed nil))
+                    (loop for i from (1- nval) downto 0 do
+                            (let ((prev (if 
+                                            (> i 0) 
+                                            (aref v (1- i)) 1))
+                                  (xi   (aref v i)))
+                              (when (>= (1- xi) prev)
+                                (decf (aref v i))
+                                (decf k)
+                                (setf changed t)
+                                (return))))
+                    (unless changed (return))))))
+       ;; too small -> increment last elements
+       ((< tot sum)
+        (let ((k (- sum tot)))
+          (loop repeat k do (incf (aref v (1- nval))))))))
+
+    (coerce v 'list)))
+
+(defun rnd-list-to-sum (nval sum &key seed)
+"
+ex: (rnd-list-to-sum 11 27 :seed 123)
+ => (1 3 1 4 4 2 1 2 2 3 4)
+"
+  (rnd-order (list-to-sum nval sum) :seed seed))

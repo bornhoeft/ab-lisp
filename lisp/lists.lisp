@@ -299,13 +299,22 @@ With rounded numbers:
 ;; (opposite-lists? '(1 2 3 4) '((3 1 4 2) (4 3 2 1) (2 4 1 3))) => t
 
 (defun x-dx (ls)
-  "Returns the list of the intervals between the contiguous values of a list <ls>. <ls> can also be a list of lists of intervals. Used convert notes to intervals."
+
+"Returns the list of the intervals between 
+the contiguous values of a list <ls>. 
+<ls> can also be a list of. 
+
+Examples: 
+(x-dx '(0 340 450 600 500 123)) => (340 110 150 -100 -377)
+(x-dx '((0 340 450 600 500 123) (30 200 350 500 450 200 600)))
+=> ((340 110 150 -100 -377) (170 150 150 -50 -250 400))"
+
   (labels ((x-dx-fun (lst)
              (loop for i in lst
-               for j in (cdr lst)
-               collect (- j i))))
+                   for j in (cdr lst)
+                   collect (- j i))))
     (if (numberp (first ls))
-      (x-dx-fun ls)
+        (x-dx-fun ls)
       (mapcar #'x-dx-fun ls))))
 
 ;; (x-dx '(0.5 0.5 0.25 0.25 0.25 0.3)) => 0.0 -0.25 0.0 0.0 0.050000012)
@@ -764,6 +773,7 @@ With rounded numbers:
       do (setf count (+ 1 count))
       finally (return count))))
 
+
 (defun similarity (lst1 lst2)
 
   "Sum all similarities between the first 
@@ -781,19 +791,18 @@ With rounded numbers:
               finally (return count)))))
 
 
-;;; only keyword item and position
-(defun position-insert-seq (&key list insert item)
-  (let ((pos (car (position-item item alist))))
-    (position-replace (gen-integer pos (+ pos (1- (length insert)))) insert alist)))
+(defun step-lst (start end steps &key (round t))
 
+  "distribute n steps between start and end
+ex.
+(step-lst 5 25 10) => (5 7 9 12 14 16 18 21 23 25)
+(step-lst 5 25 4 :round nil) => (5.0 11.666667 18.333334 25.0)"
 
-(setf alist '(0 0 0 0 0 0 1 0 2 0 0 0 3 5 7))
-(setf insert '(a b c d))
-
-(position-insert-seq :list '(0 0 0 0 0 0 1 0 2 0 0 0 3 5 7)
-                 :insert '(a b c d)
-                 :item 2)
-
-=> (0 0 0 0 0 0 1 0 a b c d 3 5 7)
-
-
+  (let ((norm (gen-transition 0 1 steps 1))
+        (range (- end start)))
+    (loop for i in norm
+          for numb = (+ start (* i range))
+          if round
+            collect (round numb)
+          else
+            collect numb)))

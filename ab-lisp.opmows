@@ -1,12 +1,12 @@
 ("workspace-view/current"
- "lisp/pitchclass.lisp"
+ "temp.opmo"
 )
 
 ("workspace-view/history"
- (("lisp/lists.lisp" "lists.lisp") ("lisp/math.lisp" "math.lisp") ("lisp/utilities.lisp" "utilities.lisp") ("lisp/quantisation.lisp" "quantisation.lisp") ("lisp/random.lisp" "random.lisp") ("lisp/spectral.lisp" "spectral.lisp") ("/Users/bornhoeft/Documents/code/github/ab-opmo/@Todo/om-TODO.opmo" "om-TODO.opmo") ("/Users/bornhoeft/Documents/code/github/sem-opmo/18-Lisp/01-Language/05-Iteration.lisp" "05-Iteration.lisp") ("/Users/bornhoeft/Documents/code/github/sem-opmo/05-Iteration/02.loop.opmo" "02.loop.opmo") ("/Users/bornhoeft/Documents/code/github/sem-opmo/18-Lisp/02-Functions/05-Testing.lisp" "05-Testing.lisp") ("/Users/bornhoeft/Documents/code/github/sem-opmo/18-Lisp/02-Functions/06-Random.lisp" "06-Random.lisp") ("/Users/bornhoeft/Documents/code/github/ab-opmo/frequency/tenney-crystal/crystal-growth.opmo" "crystal-growth.opmo") ("lisp/pitchclass.lisp" "pitchclass.lisp"))
+ (("lisp/lists.lisp" "lists.lisp") ("lisp/math.lisp" "math.lisp") ("lisp/utilities.lisp" "utilities.lisp") ("lisp/quantisation.lisp" "quantisation.lisp") ("lisp/random.lisp" "random.lisp") ("lisp/spectral.lisp" "spectral.lisp") ("/Users/bornhoeft/Documents/code/github/sem-opmo/18-Lisp/01-Language/05-Iteration.lisp" "05-Iteration.lisp") ("/Users/bornhoeft/Documents/code/github/sem-opmo/05-Iteration/02.loop.opmo" "02.loop.opmo") ("/Users/bornhoeft/Documents/code/github/sem-opmo/18-Lisp/02-Functions/05-Testing.lisp" "05-Testing.lisp") ("/Users/bornhoeft/Documents/code/github/sem-opmo/18-Lisp/02-Functions/06-Random.lisp" "06-Random.lisp") ("/Users/bornhoeft/Documents/code/github/ab-opmo/frequency/tenney-crystal/crystal-growth.opmo" "crystal-growth.opmo") ("lisp/pitchclass.lisp" "pitchclass.lisp") ("/Users/bornhoeft/Documents/Opusmodus/User Source/Extensions/User Attributes-AB.lisp" "User Attributes-AB.lisp") ("/Users/bornhoeft/Documents/werke/082-Areale/083-01-Areal/opmo/areal/pwgl2opmo.opmo" "pwgl2opmo.opmo"))
 )
 
 ("workspace-view/layout-ratios"
- (1 (OM-CAPI::MAIN 295 NIL 813) (OM-CAPI::EDITOR-AND-LISTENER-LAYOUT 766 NIL 118))
+ (1 (OM-CAPI::MAIN 237 NIL 652) (OM-CAPI::EDITOR-AND-LISTENER-LAYOUT 863 NIL 132))
 )
 
