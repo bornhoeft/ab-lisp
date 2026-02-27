@@ -67,3 +67,37 @@ To convert hertz to milliseconds, first determine the duration or period of one 
 
 ;; (subharmonic-delay 100 8) => (10 20 30 40 50 60 70 80)
 ;; (subharmonic-delay 220 8 1) => (220 440 660 880 1100 1320 1540 1760)
+
+
+
+;;; Not finished
+(defun spec-intrvl (fund start-harm harms harm-intrvl 
+                         &optional (numb-harm? t))
+  "xxx
+  
+  Args:
+  fund = fundamental, 
+  start-harm = start harmonic, 
+  harms = number of harmonics or if (numb-harm? nil) nth harmonic,
+  harm-intrvl = list of harmonic intervals, 
+  numb-harm? = number of harmonics or nth harmonic (default t).
+  
+  Examples:
+  (spec-intrvl 10 3 10 '(1 1 9)) 
+  => (30 40 50 140 150 160 250 260 270 360) = 10 harmonics
+  (spec-intrvl 10 3 10 '(1 1 5) nil) 
+  => (30 40 50 100) = upto the 10. harmonic
+  (spec-intrvl 10 1 10 1 nil) 
+  => (10 20 30 40 50 60 70 80 90 100) = upto the 10. harmonic"
+  
+  (let ((harm-intrv (if (numberp harm-intrvl) 
+                      (list harm-intrvl) harm-intrvl)))
+      (loop with x = start-harm
+        for i from 0
+        for j = (nth (mod i (length harm-intrv)) harm-intrv)
+        collect (* fund x) into reslis
+        do (setf x (+ x j))
+        until (if numb-harm?
+                (>= i (- harms 1))
+                   (>= x (+ harms 1)))
+        finally (return reslis))))
