@@ -258,30 +258,44 @@ With rounded numbers:
 
 ;; (count-all '(3 4 2 5 5 7 6 8 3 4 2 5 1 6 4 7)) => (1 2 2 3 1 2 3 2)
 
+(defun all-equal-p (list &key (test #'equal))
+  "Checks whether all elements of LIST are equal
+   (comparison with TEST; default: EQUAL)."
+  (or (null list)
+      (every (lambda (x) (funcall test x (first list))) list)))
+
 (defun identical-lists? (lis1 lis2)
-  "compares if two lists are identical"
+  "compares if two lists are identical.
+Ex.:
+(identical-lists? '(1 2 3 4) '(1 2 3 4)) => t
+(identical-lists? '(1 2 3 4) '(1 2 5 4)) => nil"
 (loop for i in lis1
   for j in lis2
   collect (equal i j) into reslis
   finally (return (if (member nil reslis) nil t)))) 
 
-;; (identical-lists? '(1 2 3 4) '(1 2 3 4)) => t
-;; (identical-lists? '(1 2 3 4) '(1 2 5 4)) => nil
+
+
+
 
 (defun different-lists? (lis1 lis2)
-  "compares if two lists are different"
-(loop for i in lis1
-  for j in lis2
-  collect (equal i j) into reslis
-  finally (return (if (member nil reslis) t nil)))) 
-
+  "Compares if two lists are different.
+Ex.:
 ;; (different-lists? '(1 2 3 4) '(1 2 3 4)) => nil
 ;; (different-lists? '(1 2 3 4) '(1 2 5 4)) => t
-;; (different-lists? '(1 2 3 4) '(2 1 3 4)) => t
+;; (different-lists? '(1 2 3 4) '(2 1 3 4)) => t"
+  (loop for i in lis1
+        for j in lis2
+        collect (equal i j) into reslis
+        finally (return (if (member nil reslis) t nil)))) 
 
 (defun opposite-lists? (lis1 lis2)
   "Compares if two lists are opposite. 
-  (Each element of lis1 with the same index in lis2 is different.)."
+  (Each element of lis1 with the same index in lis2 is different.)
+Ex.:
+;; (opposite-lists? '(1 2 3 4) '(3 1 4 2)) => t
+;; (opposite-lists? '(1 2 3 4) '(4 2 1 3)) => nil
+;; (opposite-lists? '(1 2 3 4) '((3 1 4 2) (4 3 2 1) (2 4 1 3))) => t"
   (if (numberp (first lis2))
       (loop for i in lis1
             for j in lis2
@@ -289,32 +303,34 @@ With rounded numbers:
             finally (return (if (member t reslis) nil t)))
     (loop for i in lis2
           append
-          (loop for j in i
-                for k in lis1
-                collect (equal i j)) into reslis
+            (loop for j in i
+                  for k in lis1
+                  collect (equal i j)) into reslis
           finally (return (if (member t reslis) nil t)))))
 
-;; (opposite-lists? '(1 2 3 4) '(3 1 4 2)) => t
-;; (opposite-lists? '(1 2 3 4) '(4 2 1 3)) => nil
-;; (opposite-lists? '(1 2 3 4) '((3 1 4 2) (4 3 2 1) (2 4 1 3))) => t
-
 (defun all-equal-p (list &key (test #'equal))
-  "Checks whether all elements of LIST are equal
-   (comparison with TEST; default: EQUAL)."
+  "True if every element of LIST is the same. Numbers and
+nested lists are both covered by the default test EQUAL.
+An empty list and a one-element list are true.
+Ex.:
+ (all-equal-p '(3 3 3))                => T
+ (all-equal-p '(3 3 4))                => NIL
+ (all-equal-p '((1 2) (1 2) (1 2)))    => T
+ (all-equal-p '((1 2) (1 3)))          => NIL
+ (all-equal-p '(1 1.0))                => NIL
+ (all-equal-p '(1 1.0) :test #'equalp) => T"
   (or (null list)
-      (every (lambda (x) (funcall test x (first list))) list)))
+      (every (lambda (x) (funcall test (first list) x))
+             (rest list))))
 
 (defun x-dx (ls)
-
 "Returns the list of the intervals between 
 the contiguous values of a list <ls>. 
 <ls> can also be a list of. 
-
-Examples: 
+Ex.: 
 (x-dx '(0 340 450 600 500 123)) => (340 110 150 -100 -377)
 (x-dx '((0 340 450 600 500 123) (30 200 350 500 450 200 600)))
 => ((340 110 150 -100 -377) (170 150 150 -50 -250 400))"
-
   (labels ((x-dx-fun (lst)
              (loop for i in lst
                    for j in (cdr lst)

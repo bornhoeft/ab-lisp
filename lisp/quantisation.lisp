@@ -29,7 +29,7 @@
 ;;; Quantisation
 
 (defun index-no (val lis)
-    "Returns the list index of key in row."
+    "Returns the list index of val in lis."
   (if (not (member val lis))
     (format t "Value is not in list!")
     (loop for i in lis

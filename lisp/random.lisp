@@ -455,3 +455,31 @@ ex: (rnd-list-to-sum 11 27 :seed 123)
  => (1 3 1 4 4 2 1 2 2 3 4)
 "
   (rnd-order (list-to-sum nval sum) :seed seed))
+
+;;; Example defun for brown noise
+
+(defun brown-noise (num-samples &key (step 0.02))
+  "Generate NUM-SAMPLES of brown noise.
+STEP controls the maximum random step size."
+  (let ((x 0.0))
+    (loop
+       with samples = (make-array num-samples)
+       for i from 0 below num-samples
+       ;; white noise step in [-step, +step]
+       for w = (- (random (* 2 step)) step)
+       ;; value between -step and +step
+       do
+         ;; Integration produces the 1/f² spectrum
+         (setf x (+ x w))
+         ;; soft clipping to limit drift
+         (when (> (abs x) 1.0)
+           (setf x (/ x (abs x))))
+         ;; Store the sample
+         (setf (aref samples i) x)
+       finally (return samples))))
+
+;; Example: show 50 samples
+(list-plot 
+(let ((noise (brown-noise 1000)))
+   (subseq noise 0 50))
+ :zero-based t :point-radius 2 :join-points t :style :fill)

@@ -180,11 +180,13 @@ In the alternative notation: sigma = sqrt((x0 -<03BC>)2 + (x1 -<03BC>)2 + ... + 
 ;; (round-even 4.99) => 4
 
 (defun round-up (n)
-  "Round a decimal number to the next higher integer.
+  "Same as ceiling in Common Lisp.
+   Round a decimal number to the next higher integer.
    Ex. (round-up 3.4) => 4.0
        (round-up 4.5) => 5.0
        (round-up 6) => 6"
   (round (+ n (if (minusp n) -0.5 0.5))))
+
 
 (defun root (n x)
   "(root 12 2) => 1.0594632 (semitone)"
@@ -423,3 +425,16 @@ In the alternative notation: sigma = sqrt((x0 -<03BC>)2 + (x1 -<03BC>)2 + ... + 
 
 ;; (int-div 68) => (1 2 4 17 34 68)
 
+(defun all-equal-p (list &key (test #'equal))
+"Checks whether all elements of LIST are equal 
+(comparison using TEST, default: EQUAL)."
+  (or (null list)
+      (every (lambda (x) (funcall test x (first list))) list)))
+
+;; (all-equal-p '(3 3 3 3))  ; => T
+;; (all-equal-p '(3 3 4 3))  ; => NIL
+;; (all-equal-p '("a" "a" "a") :test #'string=)  ; => T
+;; (all-equal-p '(2 2.0) :test #'=) 
+;; => T (numeric comparison, type doesn't matter)
+;; (all-equal-p '(2 2.0) :test #'equal) 
+;; => NIL (type integer/float matter
